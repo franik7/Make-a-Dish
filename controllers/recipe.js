@@ -15,16 +15,25 @@ module.exports = {
       console.log(err);
     }
   },
+  getFeed: async (req, res) => {
+    try {
+      const recipes = await Recipe.find().sort({ createdAt: "desc" }).lean();
+      res.render("feed.ejs", { recipes: recipes });
+    } catch (err) {
+      console.log(err);
+    }
+  },
   getFavorites: async (req, res) => {
     try {
       // Since we have a session each request (req) constains the logged-in users info: req user
       // console.log(req.user) to see everything  
       // Grabbing just the posts of the logged-in user
       const recipes = await Favorite.find({ user: req.user.id }).populate('recipe');
-      
+     
 
       // Sending post data from mongodb and user data to ejs template
       res.render("favorites.ejs", { recipes: recipes, user: req.user });
+      console.log(recipes)
     } catch (err) {
       console.log(err);
     }
@@ -98,7 +107,7 @@ module.exports = {
   
       // Delete post from db
       await Recipe.deleteOne({ _id: req.params.id });
-      // await Favorite.deleteMany({ _id: req.params.id });
+      await Favorite.deleteMany({ recipe: req.params.id });
   
       console.log("Deleted Recipe");
       res.redirect("/profile");

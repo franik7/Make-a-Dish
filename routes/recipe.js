@@ -12,14 +12,22 @@ router.get("/:id", ensureAuth, recipesController.getRecipe);
 //Enables user to create recipe with cloudinary for media uploads 
 router.post("/createRecipe", upload.single("file"), recipesController.createRecipe);
 
-//Enables user to facorite recipe  
+//Enables user to favorite recipe  
 router.post("/favoriteRecipe/:id", recipesController.favoriteRecipe);
+
+// Route for displaying the favorite recipes
+router.get("/", ensureAuth, recipesController.getFavorites);
+
+// Route for displaying the favorite recipes
+router.get("/feed", ensureAuth, recipesController.getFeed);
 
 //Enables user to like recipe. In controller, uses POST model to update likes by 1
 router.put("/likeRecipe/:id", recipesController.likeRecipe);
 
 //Enables user to delete recipe. In controller, uses POST model to delete recipe from MongoDB collection
 router.delete("/deleteRecipe/:id", recipesController.deleteRecipe);
+
+
 
 
 module.exports = router;

@@ -11,19 +11,28 @@
       </div>
       <div class="col-6">
         <ul class="row list-unstyled">
-        <% for(var i=0; i<recipes.length; i++) {%>
-          <li class="col-6 justify-content-between mt-5">
-            <a href="/recipe/<%= recipes[i].recipe._id%>">
-              <h2><%= recipes[i].recipe.name%></h2>
-              <img class="img-fluid" src="<%= recipes[i].recipe.image%>">
-            </a>
-              <p>Ingredients: <%= recipes[i].recipe.ingredients%></p>
-              <p>Directions: <%= recipes[i].recipe.directions%></p>
-          </li>
-        <% } %>
+          <% if (recipes.length > 0 || recipes) { %>
+            <% for (var i = 0; i < recipes.length; i++) { %>
+              <li class="col-6 justify-content-between mt-5">
+                <a href="/recipe/<%= recipes[i].recipe._id %>">
+                  <h2><%= recipes[i].recipe.name %></h2>
+                  <img class="img-fluid" src="<%= recipes[i].recipe.image %>">
+                </a>
+                <p>Ingredients: <%= recipes[i].recipe.ingredients %></p>
+                <p>Directions: <%= recipes[i].recipe.directions %></p>
+              </li>
+            <% } %>
+          <% } else { %>
+            <li class="col-12 mt-5">
+              <p>No favorites found.</p>
+            </li>
+          <% } %>
         </ul>
+        
         <div class="row justify-content-center mt-5">
-          <a class="btn btn-primary" href="/favorites">Favorites</a>
+    
+          <a class="btn btn-primary" href="/profile">Profile</a>
+          <a class="btn btn-primary" href="/feed">Feed</a>
         </div>  
       </div>  
     </div>
