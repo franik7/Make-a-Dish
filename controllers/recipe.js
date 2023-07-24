@@ -1,6 +1,7 @@
 const cloudinary = require("../middleware/cloudinary");
 const Recipe = require("../models/Recipe");
 const Favorite = require("../models/Favorite");
+const Comment = require("../models/Comment");
 
 module.exports = {
   getProfile: async (req, res) => {
@@ -45,7 +46,8 @@ module.exports = {
       // http://localhost:2121/post/435345345345a
       // id === 435345345345a
       const recipe = await Recipe.findById(req.params.id);
-      res.render("recipe.ejs", { recipe: recipe, user: req.user });
+      const comments = await Comment.find({ recipe: req.params.id }).sort({ createdAt: "desc" }).lean();
+      res.render("recipe.ejs", { recipe: recipe, user: req.user, comments: comments });
     } catch (err) {
       console.log(err);
     }
@@ -104,6 +106,9 @@ module.exports = {
   
       // Delete image from cloudinary
       await cloudinary.uploader.destroy(recipe.cloudinaryId);
+
+        // Delete associated comments from the database
+      await Comment.deleteMany({ recipe: recipe._id });
   
       // Delete post from db
       await Recipe.deleteOne({ _id: req.params.id });
@@ -114,5 +119,5 @@ module.exports = {
     } catch (err) {
       res.redirect("/profile");
     }
-  }
+  },
 };

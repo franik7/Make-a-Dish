@@ -38,6 +38,38 @@
     <p>Directions: <%= recipe.directions%></p>
   </div>
     
+  <div class="mt-5">
+    <h2>Add a comment</h2>
+    <form action="/comment/createComment/<%=recipe._id%>" method="POST">
+      <div class="mb-3">
+          <label for="title" class="form-label">Comment</label>
+          <input type="text" class="form-control" id="comment" name="comment">
+      </div>
+
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+
+  
+  <ul>
+    <% for(var i=0; i<comments.length; i++) {%>
+      <li class="col-6 justify-content-between mt-5">
+        <%= comments[i].comment%>         
+        </a>
+        <form
+              class="col-1"
+              action="/post/likeComment/<%= comments[i]._id %>?_method=PUT"
+              method="POST"
+            >
+             
+          </form>
+          
+      </li>
+    <% } %>
+  </ul>
+
+
+
     <div class="col-6 mt-5">
       <a class="btn btn-primary" href="/profile">Return to Profile</a>
       <a class="btn btn-primary" href="/favorites">Favorites</a>
