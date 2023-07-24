@@ -1,79 +1,79 @@
 <%- include('partials/header') -%>
-<div class="container">
-  <div class="row justify-content-center mt-5">
+
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <!-- Recipe Information Column -->
     <div class="col-6">
       <h2><%= recipe.name %></h2>
-      <img class="img-fluid" src="<%= recipe.image%>" />
-      <div class="row justify-content-between">
-        <form
-          class="col-1"
-          action="/recipe/likeRecipe/<%= recipe.id %>?_method=PUT"
-          method="POST"
-        >
-          <button class="btn btn-primary fa fa-heart" type="submit"></button>
+      <img class="img-fluid" src="<%= recipe.image %>" />
+      <div class="row justify-content-between align-items-center">
+        <!-- Like Recipe Button -->
+        <form action="/recipe/likeRecipe/<%= recipe.id %>?_method=PUT" method="POST">
+          <button class="btn btn-primary fa fa-heart" type="submit">Like</button>
         </form>
-        <form
-          class="col-1"
-          action="/recipe/favoriteRecipe/<%= recipe.id %>"
-          method="POST"
-        >
-          <button class="btn btn-primary fa fa-star" type="submit"></button>
+        <!-- Favorite Recipe Button -->
+        <form action="/recipe/favoriteRecipe/<%= recipe.id %>" method="POST">
+          <button class="btn btn-primary fa fa-star" type="submit">Favorite</button>
         </form>
-        <h3 class="col-3">Likes: <%= recipe.likes %></h3>
-        <%if(recipe.user == user.id){ %>
-        <form
-          action="/recipe/deleteRecipe/<%= recipe.id %>?_method=DELETE"
-          method="POST"
-          class="col-3"
-        >
-          <button class="btn btn-primary fa fa-trash" type="submit"></button>
+       
+        <!-- Delete Recipe Button (if user owns recipe) -->
+        <% if (recipe.user == user.id) { %>
+        <form action="/recipe/deleteRecipe/<%= recipe.id %>?_method=DELETE" method="POST">
+          <button class="btn btn-primary fa fa-trash" type="submit">Delete</button>
         </form>
-        <%}%>
+        <% } %>
+
+         <!-- Likes Count -->
+         <h3 class="col-3">Likes: <%= recipe.likes %></h3>
       </div>
     </div>
+
+    <!-- Ingredients Column -->
     <div class="col-3 mt-5">
-      <p>Ingredients: <%= recipe.ingredients%></p>
+      <p>Ingredients: <%= recipe.ingredients %></p>
     </div>
+
+    <!-- Directions Column -->
     <div class="col-3 mt-5">
-    <p>Directions: <%= recipe.directions%></p>
+      <p>Directions: <%= recipe.directions %></p>
+    </div>
   </div>
-    
+
+  <!-- Comment Section -->
   <div class="mt-5">
     <h2>Add a comment</h2>
-    <form action="/comment/createComment/<%=recipe._id%>" method="POST">
+    <form action="/comment/createComment/<%= recipe._id %>" method="POST">
       <div class="mb-3">
-          <label for="title" class="form-label">Comment</label>
-          <input type="text" class="form-control" id="comment" name="comment">
+        <label for="title" class="form-label">Comment</label>
+        <input type="text" class="form-control" id="comment" name="comment">
       </div>
 
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
   </div>
 
-  
-  <ul>
-    <% for(var i=0; i<comments.length; i++) {%>
-      <li class="col-6 justify-content-between mt-5">
-        <%= comments[i].comment%>         
-        </a>
-        <form
-              class="col-1"
-              action="/post/likeComment/<%= comments[i]._id %>?_method=PUT"
-              method="POST"
-            >
-             
-          </form>
-          
-      </li>
+  <!-- Comment List -->
+  <ul class="mt-5">
+    <% for (var i = 0; i < comments.length; i++) { %>
+    <li class="col-12 justify-content-between mt-3">
+      <%= comments[i].comment %>
+      <!-- Like Comment Button (You can add the form action and method here) -->
+    </li>
     <% } %>
   </ul>
 
+  <!-- Buttons Section -->
+  <div class="col-12 mt-5">
+    <div class="row mt-3">
+      <!-- Favorites Button -->
+      <div class="col-sm-4">
+        <a class="btn btn-primary btn-block" href="/favorites">Favorites</a>
+      </div>
 
-
-    <div class="col-6 mt-5">
-      <a class="btn btn-primary" href="/profile">Return to Profile</a>
-      <a class="btn btn-primary" href="/favorites">Favorites</a>
-      <a class="btn btn-primary" href="/feed">Feed</a>
+      <!-- Feed Button -->
+      <div class="col-sm-4">
+        <a class="btn btn-primary btn-block" href="/feed">Feed</a>
+      </div>
     </div>
   </div>
 </div>
