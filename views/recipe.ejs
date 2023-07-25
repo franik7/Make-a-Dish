@@ -5,12 +5,12 @@
     <!-- Recipe Information Column -->
     <div class="col-md-6">
       <h2><%= recipe.name %></h2>
-      <img class="img-fluid" src="<%= recipe.image %>" />
+      <img class="img-fluid " src="<%= recipe.image %>" />
       <br>
       <br>
       <div class="row justify-content-between align-items-center">
         <!-- Likes Count -->
-        <div class="col-12 col-md-6 mb-2 order-3 order-md-3 order-sm-2">
+        <div class="col-12 col-md-6 mb-2 order-2 order-md-3 order-sm-2">
           <h3>Likes: <%= recipe.likes %></h3>
         </div>
         <!-- Like Recipe Button -->
@@ -20,7 +20,7 @@
           </form>
         </div>
         <!-- Favorite Recipe Button -->
-        <div class="col-12 col-md-6 mb-2 order-2 order-md-2 order-sm-3">
+        <div class="col-12 col-md-6 mb-2 order-3 order-md-2 order-sm-3">
           <form action="/recipe/favoriteRecipe/<%= recipe.id %>" method="POST">
             <button class="btn btn-primary btn-block" type="submit"><i class="fa fa-star"></i> Favorites</button>
           </form>
@@ -61,15 +61,17 @@
   </div>
 
   <!-- Comment List -->
-  <ul class="mt-5">
+  <div class="mt-5">
+    <h2>Comments</h2>
+  <ul >
+    
     <% for (var i = 0; i < comments.length; i++) { %>
       <li class="col-12 justify-content-between mt-3">
         <%= comments[i].comment %>
-        <!-- Like Comment Button (You can add the form action and method here) -->
       </li>
     <% } %>
   </ul>
-
+</div>
   <div class="container">
     <!-- Buttons Section -->
     <div class="container-fluid d-flex justify-content-center col-sm-6 col-md-2 mx-auto button-container">
