@@ -1,63 +1,65 @@
 <%- include('partials/header') -%>
 <div class="container">
   <div class="row mt-5">
-      <div class="col-6">
-          <div>
-              <p><strong>User Name</strong>: <%= user.userName %></p>
-              <p><strong>Email</strong>: <%= user.email %></p>
-              <a href="/logout" class="col-3 btn btn-primary">Logout</a>
-          </div>
-          <div class="mt-5">
-            <h2>Add a post</h2>
-            <form action="/recipe/createRecipe" enctype="multipart/form-data" method="POST">
-              <div class="mb-3">
-                  <label for="name" class="form-label">Name</label>
-                  <input type="text" class="form-control" id="title" name="name">
-              </div>
-
-              <div class="mb-3">
-                <label for="ingredients" class="form-label">Ingredients</label>
-                <textarea class="form-control" id="ingredients" name="ingredients"></textarea>
-              </div>
-              <div class="mb-3">
-                <label for="directions" class="form-label">Directions</label>
-                <textarea class="form-control" id="directions" name="directions"></textarea>
-              </div>
-              <div class="mb-3">
-                <label for="imgUpload" class="form-label">Image</label>
-                <input type="file" class="form-control" id="imageUpload" name="file">
-              </div>
-              <button type="submit" class="btn btn-primary" value="Upload">Submit</button>
-            </form>
-          </div>
+    <div class="col-md-6">
+      <div>
+        <p><strong>User Name</strong>: <%= user.userName %></p>
+        <p><strong>Email</strong>: <%= user.email %></p>
+        <a href="/logout" class="btn btn-primary">Logout</a>
       </div>
-      <div class="col-6">
-        <ul class="row list-unstyled">
+      <div class="mt-5">
+        <h2>Add a post</h2>
+        <form action="/recipe/createRecipe" enctype="multipart/form-data" method="POST">
+          <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="title" name="name">
+          </div>
+
+          <div class="mb-3">
+            <label for="ingredients" class="form-label">Ingredients</label>
+            <textarea class="form-control" id="ingredients" name="ingredients"></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="directions" class="form-label">Directions</label>
+            <textarea class="form-control" id="directions" name="directions"></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="imgUpload" class="form-label">Image</label>
+            <input type="file" class="form-control" id="imageUpload" name="file">
+          </div>
+          <button type="submit" class="btn btn-primary" value="Upload">Submit</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <ul class="row list-unstyled">
         <% for(var i=0; i<recipes.length; i++) {%>
-          <li class="col-6 justify-content-between mt-5">
-            <a href="/recipe/<%= recipes[i]._id%>">
-              <h2><%= recipes[i].name%></h2>
-              <img class="img-fluid" src="<%= recipes[i].image%>">
-            </a>
-              <p>Ingredients: <%= recipes[i].ingredients%></p>
-              <p>Directions: <%= recipes[i].directions%></p>
+          <li class="col-sm-6 col-md-6 justify-content-between mt-5">
+            <div class="recipe-card border rounded-5">
+              <a href="/recipe/<%= recipes[i]._id%>">
+                <h2><%= recipes[i].name%></h2>
+                <img class="img-fluid rounded" src="<%= recipes[i].image%>">
+              </a>
+              <p class="underthepic">Click the pic for full Ingredient List and Directions</p>
+              <p class="text-truncate">Ingredients: <%= recipes[i].ingredients%></p>
+              <p class="text-truncate">Directions: <%= recipes[i].directions%></p>
+            </div>
           </li>
         <% } %>
-        </ul>
-        <div class="row justify-content-center mt-5">
-          <!-- First button (Favorites) -->
-          <div class="col-sm-6 col-md-3 mt-3">
-            <a class="btn btn-primary btn-block" href="/favorites">Favorites</a>
-          </div>
-        
-          <!-- Second button (Feed) -->
-          <div class="col-sm-6 col-md-3 mt-3">
-            <a class="btn btn-primary btn-block" href="/feed">Feed</a>
-          </div>
-        </div>
-        </div>  
-      </div>  
+      </ul>
     </div>
   </div>
 </div>
+
+<div class="container">
+  <!-- Buttons Section -->
+  <div class="container-fluid d-flex justify-content-center col-sm-6 col-md-2 mx-auto button-container">
+    <!-- First button (Favorites) -->
+    <a class="btn btn-primary btn-block" href="/favorites">Favorites</a>
+    <a class="btn btn-primary btn-block" href="/feed">Feed</a>
+  </div>
+</div>
+
+
 <%- include('partials/footer') -%>

@@ -1,40 +1,48 @@
 <%- include('partials/header') -%>
 
 <div class="container mt-5">
-  <div class="row justify-content-center">
+  <div class="row justify-content-center recipe-card border rounded-5">
     <!-- Recipe Information Column -->
-    <div class="col-6">
+    <div class="col-md-6">
       <h2><%= recipe.name %></h2>
       <img class="img-fluid" src="<%= recipe.image %>" />
+      <br>
+      <br>
       <div class="row justify-content-between align-items-center">
+        <!-- Likes Count -->
+        <div class="col-12 col-md-6 mb-2 order-3 order-md-3 order-sm-2">
+          <h3>Likes: <%= recipe.likes %></h3>
+        </div>
         <!-- Like Recipe Button -->
-        <form action="/recipe/likeRecipe/<%= recipe.id %>?_method=PUT" method="POST">
-          <button class="btn btn-primary fa fa-heart" type="submit">Like</button>
-        </form>
+        <div class="col-12 col-md-6 mb-2 order-1 order-md-1 order-sm-1">
+          <form action="/recipe/likeRecipe/<%= recipe.id %>?_method=PUT" method="POST">
+            <button class="btn btn-primary btn-block" type="submit"><i class="fa fa-heart"></i> Like</button>
+          </form>
+        </div>
         <!-- Favorite Recipe Button -->
-        <form action="/recipe/favoriteRecipe/<%= recipe.id %>" method="POST">
-          <button class="btn btn-primary fa fa-star" type="submit">Favorite</button>
-        </form>
-       
+        <div class="col-12 col-md-6 mb-2 order-2 order-md-2 order-sm-3">
+          <form action="/recipe/favoriteRecipe/<%= recipe.id %>" method="POST">
+            <button class="btn btn-primary btn-block" type="submit"><i class="fa fa-star"></i> Favorites</button>
+          </form>
+        </div>
         <!-- Delete Recipe Button (if user owns recipe) -->
         <% if (recipe.user == user.id) { %>
-        <form action="/recipe/deleteRecipe/<%= recipe.id %>?_method=DELETE" method="POST">
-          <button class="btn btn-primary fa fa-trash" type="submit">Delete</button>
-        </form>
+          <div class="col-12 col-md-6 mb-2 order-4 order-md-4 order-sm-4">
+            <form action="/recipe/deleteRecipe/<%= recipe.id %>?_method=DELETE" method="POST">
+              <button class="btn btn-primary btn-block" type="submit"><i class="fa fa-trash"></i> Delete</button>
+            </form>
+          </div>
         <% } %>
-
-         <!-- Likes Count -->
-         <h3 class="col-3">Likes: <%= recipe.likes %></h3>
       </div>
     </div>
 
     <!-- Ingredients Column -->
-    <div class="col-3 mt-5">
+    <div class="col-md-3 mt-5">
       <p>Ingredients: <%= recipe.ingredients %></p>
     </div>
 
     <!-- Directions Column -->
-    <div class="col-3 mt-5">
+    <div class="col-md-3 mt-5">
       <p>Directions: <%= recipe.directions %></p>
     </div>
   </div>
@@ -55,25 +63,19 @@
   <!-- Comment List -->
   <ul class="mt-5">
     <% for (var i = 0; i < comments.length; i++) { %>
-    <li class="col-12 justify-content-between mt-3">
-      <%= comments[i].comment %>
-      <!-- Like Comment Button (You can add the form action and method here) -->
-    </li>
+      <li class="col-12 justify-content-between mt-3">
+        <%= comments[i].comment %>
+        <!-- Like Comment Button (You can add the form action and method here) -->
+      </li>
     <% } %>
   </ul>
 
-  <!-- Buttons Section -->
-  <div class="col-12 mt-5">
-    <div class="row mt-3">
-      <!-- Favorites Button -->
-      <div class="col-sm-4">
-        <a class="btn btn-primary btn-block" href="/favorites">Favorites</a>
-      </div>
-
-      <!-- Feed Button -->
-      <div class="col-sm-4">
-        <a class="btn btn-primary btn-block" href="/feed">Feed</a>
-      </div>
+  <div class="container">
+    <!-- Buttons Section -->
+    <div class="container-fluid d-flex justify-content-center col-sm-6 col-md-2 mx-auto button-container">
+      <!-- First button (Favorites) -->
+      <a class="btn btn-primary btn-block" href="/favorites">Favorites</a>
+      <a class="btn btn-primary btn-block" href="/feed">Feed</a>
     </div>
   </div>
 </div>
