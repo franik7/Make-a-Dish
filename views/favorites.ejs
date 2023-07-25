@@ -2,14 +2,10 @@
 <div class="container">
   <div class="row mt-5">
     <div class="col-md-6">
-      <div>
-        <p><strong>User Name</strong>: <%= user.userName %></p>
-        <p><strong>Email</strong>: <%= user.email %></p>
-        <a href="/logout" class="btn btn-primary">Logout</a>
-      </div>
+      
     </div>
 
-    <div class="col-md-6">
+    <div class="col-md">
       <ul class="row list-unstyled">
         <% if (recipes.length > 0 || recipes) { %>
           <% for (var i = 0; i < recipes.length; i++) { %>
