@@ -55,22 +55,22 @@ module.exports = {
       // router.get("/:id", ensureAuth, postController.getPostController) 
       // http://localhost:2121/post/435345345345a
       // id === 435345345345a
-      try {
-        const recipe = await Recipe.findById(req.params.id).lean();
-        const originalUser = recipe.user; // Save the original user field
-    
-        // Populate the user field to get the user object with 'userName'
-        const populatedRecipe = await Recipe.findById(req.params.id)
-          .populate("user", "userName")
-          .lean();
-    
-        const comments = await Comment.find({ recipe: req.params.id }).sort({ createdAt: "desc" }).lean();
-    
-        res.render("recipe.ejs", { recipe: populatedRecipe, originalUser: originalUser, user: req.user, comments: comments });
-      } catch (err) {
-        console.log(err);
-      }
-    },
+     try {
+    const recipe = await Recipe.findById(req.params.id).lean();
+    const originalUser = recipe.user; // Save the original user field
+
+    // Populate the user field to get the user object with 'userName'
+    const populatedRecipe = await Recipe.findById(req.params.id)
+      .populate("user", "userName")
+      .lean();
+
+    const comments = await Comment.find({ recipe: req.params.id }).sort({ createdAt: "desc" }).lean();
+
+    res.render("recipe.ejs", { recipe: populatedRecipe, originalUser: originalUser, user: req.user, comments: comments });
+  } catch (err) {
+    console.log(err);
+  }
+},
 
   createRecipe: async (req, res) => {
     try {
