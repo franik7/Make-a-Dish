@@ -5,6 +5,7 @@
     <!-- Recipe Information Column -->
     <div class="col-md-6">
       <h2><%= recipe.name %></h2>
+      <p>Recipe by: <%= recipe.user.userName %></p>
       <img class="img-fluid " src="<%= recipe.image %>" />
       <br>
       <br>
@@ -26,7 +27,7 @@
           </form>
         </div>
         <!-- Delete Recipe Button (if user owns recipe) -->
-        <% if (recipe.user == user.id) { %>
+        <% if (originalUser == user.id) { %>
           <div class="col-12 col-md-6 mb-2 order-4 order-md-4 order-sm-4">
             <form action="/recipe/deleteRecipe/<%= recipe.id %>?_method=DELETE" method="POST">
               <button class="btn btn-primary btn-block" type="submit"><i class="fa fa-trash"></i> Delete</button>
@@ -35,6 +36,9 @@
         <% } %>
       </div>
     </div>
+
+
+
 
     <!-- Ingredients Column -->
     <div class="col-md-3 mt-5">
@@ -63,23 +67,23 @@
   <!-- Comment List -->
   <div class="mt-5">
     <h2>Comments</h2>
-  <ul >
-    
-    <% for (var i = 0; i < comments.length; i++) { %>
-      <li class="col-12 justify-content-between mt-3">
-        <%= comments[i].comment %>
-      </li>
-    <% } %>
-  </ul>
+    <ul>
+      <% for (var i = 0; i < comments.length; i++) { %>
+        <li class="col-12 justify-content-between mt-3">
+          <%= comments[i].comment %>
+        </li> Comment by: <%= comments[i].username %>
+      <% } %>
+    </ul>
+  </div>
 </div>
-  <div class="container">
-    <!-- Buttons Section -->
-    <div class="container-fluid d-flex justify-content-center col-sm-6 col-md-2 mx-auto button-container">
-      <!-- First button (Favorites) -->
-      <a class="btn btn-primary btn-block" href="/favorites">Favorites</a>
-      <a class="btn btn-primary btn-block" href="/feed">Feed</a>
-      <a class="btn btn-primary btn-block" href="/profile">Profile</a>
-    </div>
+
+<div class="container">
+  <!-- Buttons Section -->
+  <div class="container-fluid d-flex justify-content-center col-sm-6 col-md-2 mx-auto button-container">
+    <!-- First button (Favorites) -->
+    <a class="btn btn-primary btn-block" href="/favorites">Favorites</a>
+    <a class="btn btn-primary btn-block" href="/feed">Feed</a>
+    <a class="btn btn-primary btn-block" href="/profile">Profile</a>
   </div>
 </div>
 

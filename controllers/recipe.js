@@ -3,6 +3,7 @@ const Recipe = require("../models/Recipe");
 const Favorite = require("../models/Favorite");
 const Comment = require("../models/Comment");
 
+
 module.exports = {
   getProfile: async (req, res) => {
     try {
@@ -18,7 +19,11 @@ module.exports = {
   },
   getFeed: async (req, res) => {
     try {
-      const recipes = await Recipe.find().sort({ createdAt: "desc" }).lean();
+      const recipes = await Recipe.find()
+        .sort({ createdAt: "desc" })
+        .populate("user", "userName") // Populate the 'user' field and only select the 'userName' property
+        .lean();
+  
       res.render("feed.ejs", { recipes: recipes });
     } catch (err) {
       console.log(err);
@@ -26,32 +31,47 @@ module.exports = {
   },
   getFavorites: async (req, res) => {
     try {
-      // Since we have a session each request (req) constains the logged-in users info: req user
-      // console.log(req.user) to see everything  
-      // Grabbing just the posts of the logged-in user
-      const recipes = await Favorite.find({ user: req.user.id }).populate('recipe');
-     
-
-      // Sending post data from mongodb and user data to ejs template
-      res.render("favorites.ejs", { recipes: recipes, user: req.user });
-      console.log(recipes)
+      // Since we have a session, each request (req) contains the logged-in user's info: req.user
+      // Grabbing the favorite recipes of the logged-in user
+      const favoriteRecipes = await Favorite.find({ user: req.user.id })
+        .populate({
+          path: "recipe",
+          populate: {
+            path: "user",
+            select: "userName",
+          },
+        })
+        .lean();
+  
+      // Sending favorite recipe data from MongoDB and user data to the ejs template
+      res.render("favorites.ejs", { favoriteRecipes: favoriteRecipes, user: req.user });
     } catch (err) {
       console.log(err);
     }
   },
+  
   getRecipe: async (req, res) => {
-    try {
-      // id parameter comes from the post routes
+          // id parameter comes from the post routes
       // router.get("/:id", ensureAuth, postController.getPostController) 
       // http://localhost:2121/post/435345345345a
       // id === 435345345345a
-      const recipe = await Recipe.findById(req.params.id);
-      const comments = await Comment.find({ recipe: req.params.id }).sort({ createdAt: "desc" }).lean();
-      res.render("recipe.ejs", { recipe: recipe, user: req.user, comments: comments });
-    } catch (err) {
-      console.log(err);
-    }
-  },  
+      try {
+        const recipe = await Recipe.findById(req.params.id).lean();
+        const originalUser = recipe.user; // Save the original user field
+    
+        // Populate the user field to get the user object with 'userName'
+        const populatedRecipe = await Recipe.findById(req.params.id)
+          .populate("user", "userName")
+          .lean();
+    
+        const comments = await Comment.find({ recipe: req.params.id }).sort({ createdAt: "desc" }).lean();
+    
+        res.render("recipe.ejs", { recipe: populatedRecipe, originalUser: originalUser, user: req.user, comments: comments });
+      } catch (err) {
+        console.log(err);
+      }
+    },
+
   createRecipe: async (req, res) => {
     try {
       // Upload image to cloudinary

@@ -2,21 +2,22 @@
   <div class="container">
 
     <div class="row justify-content-center mt-5">
-     
       <ul class="row list-unstyled">
         <h3>Click on the dish you like</h3>
-        <% for(var i=0; i<recipes.length; i++) {%>
-          
+        <% for(var i=0; i<recipes.length; i++) { %>
           <li class="col-6 justify-content-between mt-5">
             <div class="recipe-card border rounded-5">
-            <h2><%= recipes[i].name%></h2>
-            <a href="/recipe/<%= recipes[i]._id%>">
-              <img class="img-fluid" src="<%= recipes[i].image%>">
-            </a>
+              <h2><%= recipes[i].name %></h2>
+              <a href="/recipe/<%= recipes[i]._id %>">
+                <img class="img-fluid" src="<%= recipes[i].image %>">
+              </a>
+              <p>Recipe by: <%= recipes[i].user.userName %></p><!-- Update this line -->
+            </div>
           </li>
         <% } %>
-        </ul>
-        </div>
+      </ul>
+    </div>
+    
 
         
 
