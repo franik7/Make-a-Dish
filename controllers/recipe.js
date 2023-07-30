@@ -19,7 +19,11 @@ module.exports = {
   },
   getFeed: async (req, res) => {
     try {
-      const recipes = await Recipe.find().sort({ createdAt: "desc" }).lean();
+      const recipes = await Recipe.find()
+        .sort({ createdAt: "desc" })
+        .populate("user", "userName") // Populate the 'user' field and only select the 'userName' property
+        .lean();
+  
       res.render("feed.ejs", { recipes: recipes });
     } catch (err) {
       console.log(err);
@@ -27,20 +31,26 @@ module.exports = {
   },
   getFavorites: async (req, res) => {
     try {
-      // Since we have a session each request (req) constains the logged-in users info: req user
-      // console.log(req.user) to see everything  
-      // Grabbing just the posts of the logged-in user
-      const recipes = await Favorite.find({ user: req.user.id }).populate('recipe');
-     
-
-      // Sending post data from mongodb and user data to ejs template
-      res.render("favorites.ejs", { recipes: recipes, user: req.user });
-      console.log(recipes)
+      // Since we have a session, each request (req) contains the logged-in user's info: req.user
+      // Grabbing the favorite recipes of the logged-in user
+      const favoriteRecipes = await Favorite.find({ user: req.user.id })
+        .populate({
+          path: "recipe",
+          populate: {
+            path: "user",
+            select: "userName",
+          },
+        })
+        .lean();
+  
+      // Sending favorite recipe data from MongoDB and user data to the ejs template
+      res.render("favorites.ejs", { favoriteRecipes: favoriteRecipes, user: req.user });
     } catch (err) {
       console.log(err);
     }
   },
-  getRecipe: async (req, res) => {
+  
+ getRecipe: async (req, res) => {
     try {
       const recipe = await Recipe.findById(req.params.id);
 
@@ -56,6 +66,8 @@ module.exports = {
       console.log(err);
     }
   },
+
+
   createRecipe: async (req, res) => {
     try {
       // Upload image to cloudinary
