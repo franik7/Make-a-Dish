@@ -375,6 +375,18 @@ img{
   border-radius: 2%;
 }
 
-/* img:hover{
+img:hover{
   transform: scale(1.01);
-} */
+}
+
+@media (max-width: 576px) {
+  .navbar-brand {
+    margin-left: 8px;
+  }
+
+  .burger  {
+    margin-right: 8px;
+  }
+}
+  
+
