@@ -2,6 +2,7 @@ const cloudinary = require("../middleware/cloudinary");
 const Recipe = require("../models/Recipe");
 const Favorite = require("../models/Favorite");
 const Comment = require("../models/Comment");
+const User = require("../models/User");
 
 module.exports = {
   getProfile: async (req, res) => {
@@ -45,7 +46,11 @@ module.exports = {
       // router.get("/:id", ensureAuth, postController.getPostController) 
       // http://localhost:2121/post/435345345345a
       // id === 435345345345a
-      const recipe = await Recipe.findById(req.params.id);
+      const recipe = await Recipe.findById(req.params.id)
+      
+ // Fetch the user who added the recipe based on their username
+ const user = await User.findOne({ username: recipe.username }).lean();
+
       const comments = await Comment.find({ recipe: req.params.id }).sort({ createdAt: "desc" }).lean();
       res.render("recipe.ejs", { recipe: recipe, user: req.user, comments: comments });
     } catch (err) {
