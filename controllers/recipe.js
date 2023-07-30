@@ -42,21 +42,20 @@ module.exports = {
   },
   getRecipe: async (req, res) => {
     try {
-      // id parameter comes from the post routes
-      // router.get("/:id", ensureAuth, postController.getPostController) 
-      // http://localhost:2121/post/435345345345a
-      // id === 435345345345a
-      const recipe = await Recipe.findById(req.params.id)
-      
- // Fetch the user who added the recipe based on their username
- const user = await User.findOne({ username: recipe.username }).lean();
+      const recipe = await Recipe.findById(req.params.id);
+
+      // Fetch the user separately using the user ID from the recipe object
+      const user = await User.findById(recipe.user);
+
+      const userName = user.userName; // Extract the userName from the fetched user
 
       const comments = await Comment.find({ recipe: req.params.id }).sort({ createdAt: "desc" }).lean();
-      res.render("recipe.ejs", { recipe: recipe, user: req.user, comments: comments });
+
+      res.render("recipe.ejs", { recipe: recipe, user: req.user, userName: userName, comments: comments });
     } catch (err) {
       console.log(err);
     }
-  },  
+  },
   createRecipe: async (req, res) => {
     try {
       // Upload image to cloudinary
