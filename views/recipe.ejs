@@ -57,19 +57,25 @@
         <input type="text" class="form-control" id="comment" name="comment">
       </div>
 
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="submit" class="btn btn-primary">Add a Comment</button>
     </form>
   </div>
 
-  <!-- Comment List -->
-  <ul class="mt-5">
+<!-- Comment List -->
+<div class="mt-5">
+  <h2>Comments</h2>
+  <ul class="mt-5 list-unstyled">
     <% for (var i = 0; i < comments.length; i++) { %>
       <li class="col-12 justify-content-between mt-3">
-        <%= comments[i].comment %>
-        <!-- Like Comment Button (You can add the form action and method here) -->
+        <div class="comment-box p-3 border rounded">
+          <%= comments[i].comment %>
+          <!-- Like Comment Button (You can add the form action and method here) -->
+        </div>
       </li>
     <% } %>
   </ul>
+</div>
+
 
   <div class="container">
     <!-- Buttons Section -->
